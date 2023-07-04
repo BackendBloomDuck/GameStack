@@ -1,9 +1,8 @@
 package com.example.gameproject.game;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.gameproject.userGame.UserGame;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +26,10 @@ public class Game {
     private Integer metacritic_score;
     private String release_date;
     private Integer play_time;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
+    private List<UserGame> userGames;
 
 
     public Game(String name, int metacritic, String released, int playtime, String platforms, String developers, String genres) {

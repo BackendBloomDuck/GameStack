@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -17,6 +16,12 @@ public class GameServiceImp implements GameService {
     @Autowired
     private GameRepository repo;
 
+
+    /**
+     * @param name
+     * @param pageable
+     * @return list of total pages, total elements and the page content
+     */
     @Override
     public List<Object> findByNameIgnoreCaseWithPaging(String name, Pageable pageable) {
         Page<Game> page = repo.findByNameContainingIgnoreCase(name, pageable);
@@ -25,14 +30,23 @@ public class GameServiceImp implements GameService {
         return List.of(totalPages, totalElements, page.getContent());
     }
 
+    /**
+     * @param id
+     * @return game
+     * @throws GameNotFoundException
+     */
     @Override
-    public Game getGameById(Long id) throws GameNotFoundException {
+    public Game getGameById(int id) throws GameNotFoundException {
         Optional<Game> game = repo.findById(id);
         if(game.isPresent())
             return game.get();
         throw new GameNotFoundException("The game is NOT exist");
     }
 
+    /**
+     * @param game
+     * @throws GameNotFoundException
+     */
     @Override
     public void addGame(Game game) throws GameNotFoundException {
         Optional<Game> found = repo.findById(game.getId());
@@ -42,8 +56,16 @@ public class GameServiceImp implements GameService {
         repo.save(game);
     }
 
+    /**
+     * @param game
+     * @param id
+     * @throws GameNotFoundException
+     *
+     * Explanation: update the exising game
+     *  if anybody value brought that has a value (not null or no value)
+     */
     @Override
-    public void updateGame(Game game, Long id) throws GameNotFoundException {
+    public void updateGame(Game game, int id) throws GameNotFoundException {
         Optional<Game> found = repo.findById(id);
         if(found.isEmpty())
             throw new GameNotFoundException("The game is NOT exist");

@@ -27,16 +27,24 @@ public class UserGameController {
         this.gameService = gameService;
     }
 
+    /**
+     * @return all gameUser
+     */
     @GetMapping
     List<UserGame> getUserGames(){
         return repo.findAll();
     }
 
-    //    @CrossOrigin
+    /**
+     * @param userGameRequest
+     * @throws UserNotFoundException
+     * @throws GameNotFoundException
+     * Explanation: make a relation between a user and a game
+     */
     @PostMapping
     void addUserGame(@RequestBody UserGameRequest userGameRequest) throws UserNotFoundException, GameNotFoundException {
-        User user = userServer.getUserById((long) userGameRequest.getUserId());
-        Game game = gameService.getGameById((long) userGameRequest.getGameId());
+        User user = userServer.getUserById(userGameRequest.getUserId());
+        Game game = gameService.getGameById(userGameRequest.getGameId());
         String status = userGameRequest.getStatus();
         UserGame userGame = new UserGame();
         userGame.setUser(user);

@@ -22,6 +22,11 @@ public class GameController {
 
     private final GameService gameService;
 
+    /**
+     *    Value: the value is come from resources application.yml
+     *    Represent: the size of a page.
+     *    Page: the number of element per page
+     */
     @Value("${setting.pageSize}")
     private Integer pageSize;
 
@@ -30,6 +35,13 @@ public class GameController {
         this.gameService = gameService;
     }
 
+
+    /**
+     *
+     * @param name
+     * @param pageNumber
+     * @return list of games and that are warped by GamePagingRes
+     */
     @GetMapping
     public GamePagingRes getGameByNameIgnoreCaseWithPaging(@RequestParam String name, @RequestParam int pageNumber){
         Pageable request = PageRequest.of(pageNumber, pageSize);
@@ -50,8 +62,14 @@ public class GameController {
         return new GamePagingRes(pageNumber, (int) objects.get(0), pageSize, (long) objects.get(1), gameRes);
     }
 
+    /**
+     *
+     * @param id
+     * @return Game
+     * @throws GameNotFoundException
+     */
     @GetMapping("/{id}")
-    public GameRes getGameById(@PathVariable Long id) throws GameNotFoundException{
+    public GameRes getGameById(@PathVariable int id) throws GameNotFoundException{
         Game game = gameService.getGameById(id);
         return new GameRes(
                 game.getId(),
@@ -65,14 +83,25 @@ public class GameController {
         );
     }
 
+    /**
+     * @param game
+     * @return MessageRes that has a message string and status
+     * @throws GameNotFoundException
+     */
     @PostMapping
     ResponseEntity<MessageRes> addGame(@RequestBody Game game) throws GameNotFoundException {
         gameService.addGame(game);
         return new ResponseEntity<>(new MessageRes("The game is added"), HttpStatus.CREATED);
     }
 
+    /**
+     * @param game
+     * @param id
+     * @return MessageRes that has a message string and status
+     * @throws GameNotFoundException
+     */
     @PutMapping("/{id}")
-    ResponseEntity<MessageRes> updateGame(@RequestBody Game game, @PathVariable Long id) throws GameNotFoundException {
+    ResponseEntity<MessageRes> updateGame(@RequestBody Game game, @PathVariable int id) throws GameNotFoundException {
         gameService.updateGame(game, id);
         return new ResponseEntity<>(new MessageRes("The game is updated"), HttpStatus.OK);
     }

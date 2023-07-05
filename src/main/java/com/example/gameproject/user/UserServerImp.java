@@ -13,7 +13,7 @@ public class UserServerImp implements UserServer{
     private UserRepository repo;
 
     @Override
-    public User getUserById(Long id) throws UserNotFoundException {
+    public User getUserById(int id) throws UserNotFoundException {
         Optional<User> user = repo.findById(id);
         if(user.isPresent())
             return user.get();

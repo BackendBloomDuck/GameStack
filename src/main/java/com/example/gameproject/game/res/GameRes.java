@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameRes {
-    private Long id;
+    private int id;
     private String name;
     private List<String> developer;
     private List<String> genres;

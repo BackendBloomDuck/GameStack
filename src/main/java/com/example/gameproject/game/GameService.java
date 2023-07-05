@@ -9,9 +9,9 @@ public interface GameService {
 
     List<Object> findByNameIgnoreCaseWithPaging(String name, Pageable pageable);
 
-    Game getGameById(Long id) throws GameNotFoundException;
+    Game getGameById(int id) throws GameNotFoundException;
 
     void addGame(Game game) throws GameNotFoundException;
 
-    void updateGame(Game game, Long id) throws GameNotFoundException;
+    void updateGame(Game game, int id) throws GameNotFoundException;
 }

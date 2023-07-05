@@ -17,7 +17,6 @@ import java.io.Serializable;
 public class GameUserID implements Serializable {
     @Column(name = "game_id")
     int gameId;
-
     @Column(name = "user_id")
     int userId;
 }

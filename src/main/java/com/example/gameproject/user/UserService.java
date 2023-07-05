@@ -22,4 +22,8 @@ public interface UserService{
     List<User> getAllUsers();
 
     List<UserGame> getFinishedGames(int id) throws UserNotFoundException;
+
+    List<UserGame> getBacklogGames(int id) throws UserNotFoundException;
+
+    List<UserGame> getPlayingGames(int id) throws UserNotFoundException;
 }

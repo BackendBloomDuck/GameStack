@@ -80,10 +80,12 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public List<UserGame> getFinishedGames(int id) {
+    public List<UserGame> getFinishedGames(int id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-
-        return null;
+        if(user.isPresent())
+            return user.get().getUserGames();
+//        throw
+        throw new UserNotFoundException();
     }
 
 

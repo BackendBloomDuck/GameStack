@@ -1,13 +1,14 @@
-package dev.gamesapi.user;
+package com.example.gameproject.user;
 
 
-import dev.gamesapi.game.UserGame;
+import com.example.gameproject.userGame.UserGame;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,11 +23,13 @@ public class User{
     @Column( nullable = false, unique = true )
     private String username;
     private String email;
-    @Column( nullable = false, unique = true )
+    @Column( nullable = false )
     private String password;
     @Column( nullable = false )
     private String roles;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserGame> Status;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<UserGame> userGames;
 }

@@ -1,6 +1,6 @@
-package dev.gamesapi.user.userInfo;
+package com.example.gameproject.user.userInfo;
 
-import dev.gamesapi.user.User;
+import com.example.gameproject.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

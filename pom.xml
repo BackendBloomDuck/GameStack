@@ -8,48 +8,32 @@
         <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-<<<<<<< HEAD
     <groupId>com.example</groupId>
     <artifactId>GameProject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>GameProject</name>
     <description>GameProject</description>
-=======
-    <groupId>dev</groupId>
-    <artifactId>gamesAPI</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>gamesAPI</name>
-    <description>gamesAPI</description>
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-<<<<<<< HEAD
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-=======
-            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<<<<<<< HEAD
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
-=======
-
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -57,13 +41,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-<<<<<<< HEAD
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-=======
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -71,29 +50,23 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-<<<<<<< HEAD
-=======
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-<<<<<<< HEAD
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
-=======
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-test</artifactId>-->
+<!--            <scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -118,7 +91,6 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.5</version>
->>>>>>> 81bd33585ab80082297c9aecd34b423d142832ff
         </dependency>
     </dependencies>
 

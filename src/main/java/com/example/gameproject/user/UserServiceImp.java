@@ -1,32 +1,40 @@
-package dev.gamesapi.user;
+package com.example.gameproject.user;
 
 
-import dev.gamesapi.DTOs.MessageResponse;
-import dev.gamesapi.user.userInfo.UserInfoRepository;
+import com.example.gameproject.DTOs.MessageResponse;
+import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.userGame.UserGame;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService{
-    @Autowired
-    UserInfoRepository userInfoRepository;
-    @Autowired
+    UserRepository userRepository;
+
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     @Override
     public ResponseEntity<?> addUser(User user) {
-        if ( userInfoRepository.findByUsername( user.getUsername() ).isPresent() ) {
+        if ( userRepository.findByUsername( user.getUsername() ).isPresent() ) {
             return ResponseEntity.status( HttpStatus.BAD_REQUEST).body( "user already created" );
 
         }
         else {
             user.setPassword( passwordEncoder.encode( user.getPassword() ) );
-            userInfoRepository.save( user );
+            userRepository.save( user );
             return ResponseEntity.status( HttpStatus.CREATED )
                     .body( new MessageResponse( "new user created" ) );
         }
@@ -35,13 +43,13 @@ public class UserServiceImp implements UserService{
 
     @Override
     public ResponseEntity<?> updateUser(int id, User newUser) {
-        Optional<User> optionalUser = userInfoRepository.findById( id );
+        Optional<User> optionalUser = userRepository.findById( id );
         if ( optionalUser.isPresent() ) {
             User user = optionalUser.get();
             user.setEmail( newUser.getEmail() );
             user.setPassword( newUser.getPassword() );
             user.setUsername( newUser.getUsername() );
-            userInfoRepository.save( user );
+            userRepository.save( user );
             return ResponseEntity.status( HttpStatus.OK )
                     .body( "user has been updated" );
         }
@@ -51,18 +59,40 @@ public class UserServiceImp implements UserService{
 
     @Override
     public ResponseEntity<?> getUser(String username) {
-        if (userInfoRepository.findByUsername( username ).isPresent()){
-            return ResponseEntity.status( HttpStatus.FOUND).body( userInfoRepository.findByUsername( username ) );
+        if (userRepository.findByUsername( username ).isPresent()){
+            return ResponseEntity.status( HttpStatus.FOUND).body( userRepository.findByUsername( username ) );
         }
         return ResponseEntity.status( HttpStatus.NOT_FOUND).body( "user not found" );
 
     }
 
+    @Override
+    public User getUserById(int id) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get();
+        throw new UserNotFoundException("user not found");
+
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserGame> getFinishedGames(int id) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get().getUserGames();
+//        throw
+        throw new UserNotFoundException();
+    }
+
 
     public ResponseEntity<?> delete(Integer id) {
-        Optional<User> user = userInfoRepository.findById( id );
+        Optional<User> user = userRepository.findById( id );
         if ( user.isPresent() ) {
-            userInfoRepository.deleteById( id );
+            userRepository.deleteById( id );
             return ResponseEntity.status( HttpStatus.NO_CONTENT).body( "user has been deleted" );
         }
         return ResponseEntity.status( HttpStatus.NOT_FOUND )

@@ -1,7 +1,7 @@
-package dev.gamesapi.security;
+package com.example.gameproject.security;
 
 
-import dev.gamesapi.user.userInfo.UserInfoUserDetailsService;
+import com.example.gameproject.user.userInfo.UserInfoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

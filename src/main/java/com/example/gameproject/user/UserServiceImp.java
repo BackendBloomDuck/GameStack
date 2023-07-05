@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -81,10 +82,44 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<UserGame> getFinishedGames(int id) throws UserNotFoundException {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent())
-            return user.get().getUserGames();
-//        throw
+//        Optional<User> user = userRepository.findById(id);
+//        if(user.isPresent())
+//            return (List<UserGame>) user.get().getUserGames().stream()
+//                    .map(userGame ->{
+//                        if (Objects.equals(userGame.getStatus(), "finished")) {
+//                            return userGame;
+//                        }
+//                        return false;
+//                    });
+        throw new UserNotFoundException();
+    }
+
+    @Override
+    public List<UserGame> getBacklogGames(int id) throws UserNotFoundException {
+//        Optional<User> user = userRepository.findById(id);
+//        if(user.isPresent())
+//            return (List<UserGame>) user.get().getUserGames().stream()
+//                    .map(userGame ->{
+//                        if (Objects.equals(userGame.getStatus(), "backlog")) {
+//                            return userGame;
+//                        }
+//                        return false;
+//                    });
+
+        throw new UserNotFoundException();
+    }
+
+    @Override
+    public List<UserGame> getPlayingGames(int id) throws UserNotFoundException {
+//        Optional<User> user = userRepository.findById(id);
+//        if(user.isPresent())
+//            return (List<UserGame>) user.get().getUserGames().stream()
+//                    .map(userGame ->{
+//                        if (Objects.equals(userGame.getStatus(), "playing")) {
+//                            return userGame;
+//                        }
+//                        return false;
+//                    });
         throw new UserNotFoundException();
     }
 

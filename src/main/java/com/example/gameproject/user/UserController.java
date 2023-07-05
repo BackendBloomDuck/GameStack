@@ -33,7 +33,17 @@ public class UserController{
     }
 
     @GetMapping("/{id}/finished")
-    public List<UserGame> getFinishedGames(@PathVariable int id) {
+    public List<UserGame> getFinishedGames(@PathVariable int id) throws UserNotFoundException {
         return userService.getFinishedGames(id);
+    }
+
+    @GetMapping("/{id}/backlog")
+    public List<UserGame> getBacklogGames(@PathVariable int id) throws UserNotFoundException {
+        return userService.getBacklogGames(id);
+    }
+
+    @GetMapping("/{id}/playing")
+    public List<UserGame> getPlayingGames(@PathVariable int id) throws UserNotFoundException {
+        return userService.getPlayingGames(id);
     }
 }

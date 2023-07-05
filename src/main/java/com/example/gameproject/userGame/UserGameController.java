@@ -50,6 +50,8 @@ public class UserGameController {
         userGame.setUser(user);
         userGame.setGame(game);
         userGame.setStatus(status);
+        GameUserID usergmaeid = new GameUserID(userGameRequest.getGameId(), userGameRequest.getUserId());
+        userGame.setId(usergmaeid);
         repo.save(userGame);
     }
 }

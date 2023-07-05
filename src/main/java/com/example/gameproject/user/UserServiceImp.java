@@ -2,6 +2,7 @@ package com.example.gameproject.user;
 
 
 import com.example.gameproject.DTOs.MessageResponse;
+import com.example.gameproject.exception.GameNotFoundException;
 import com.example.gameproject.exception.UserNotFoundException;
 import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService{
@@ -28,43 +30,40 @@ public class UserServiceImp implements UserService{
 
 
     @Override
-    public ResponseEntity<?> addUser(User user) {
-        if ( userRepository.findByUsername( user.getUsername() ).isPresent() ) {
-            return ResponseEntity.status( HttpStatus.BAD_REQUEST).body( "user already created" );
+    public ResponseEntity<User> addUser(User user) throws UserNotFoundException {
+        Optional<User> found = userRepository.findById(user.getId());
+        if ( found.isPresent() ) {
+            return ResponseEntity.status( HttpStatus.BAD_REQUEST).body(found.get());
+        }
+        throw new UserNotFoundException();
+    }
 
-        }
-        else {
-            user.setPassword( passwordEncoder.encode( user.getPassword() ) );
-            userRepository.save( user );
-            return ResponseEntity.status( HttpStatus.CREATED )
-                    .body( new MessageResponse( "new user created" ) );
-        }
+    @Override
+    public void updateUser(User newUser, int id) throws UserNotFoundException {
+        Optional<User> found = userRepository.findById( id );
+        if(found.isEmpty())
+            throw new UserNotFoundException("The game is NOT exist");
+
+        if(Objects.nonNull(newUser.getEmail()) && !"".equalsIgnoreCase(newUser.getEmail()))
+            found.get().setEmail(newUser.getEmail());
+
+        if(Objects.nonNull(newUser.getEmail()) && !"".equalsIgnoreCase(newUser.getEmail()))
+            found.get().setEmail(newUser.getEmail());
+
+        if(Objects.nonNull(newUser.getPassword()) && !"".equalsIgnoreCase(newUser.getPassword()))
+            found.get().setPassword(newUser.getPassword());
+
+        userRepository.save( found.get() );
 
     }
 
     @Override
-    public ResponseEntity<?> updateUser(int id, User newUser) {
-        Optional<User> optionalUser = userRepository.findById( id );
-        if ( optionalUser.isPresent() ) {
-            User user = optionalUser.get();
-            user.setEmail( newUser.getEmail() );
-            user.setPassword( newUser.getPassword() );
-            user.setUsername( newUser.getUsername() );
-            userRepository.save( user );
-            return ResponseEntity.status( HttpStatus.OK )
-                    .body( "user has been updated" );
+    public User getUser(String username) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()){
+            return user.get();
         }
-        return ResponseEntity.status( HttpStatus.NOT_FOUND )
-                .body( "user not found" );
-    }
-
-    @Override
-    public ResponseEntity<?> getUser(String username) {
-        if (userRepository.findByUsername( username ).isPresent()){
-            return ResponseEntity.status( HttpStatus.FOUND).body( userRepository.findByUsername( username ) );
-        }
-        return ResponseEntity.status( HttpStatus.NOT_FOUND).body( "user not found" );
-
+        throw new UserNotFoundException("user not found");
     }
 
     @Override
@@ -82,44 +81,28 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<UserGame> getFinishedGames(int id) throws UserNotFoundException {
-//        Optional<User> user = userRepository.findById(id);
-//        if(user.isPresent())
-//            return (List<UserGame>) user.get().getUserGames().stream()
-//                    .map(userGame ->{
-//                        if (Objects.equals(userGame.getStatus(), "finished")) {
-//                            return userGame;
-//                        }
-//                        return false;
-//                    });
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get().getUserGames().stream()
+                    .filter( userGame -> Objects.equals(userGame.getStatus(), "finished")).collect(Collectors.toList());
         throw new UserNotFoundException();
     }
 
     @Override
     public List<UserGame> getBacklogGames(int id) throws UserNotFoundException {
-//        Optional<User> user = userRepository.findById(id);
-//        if(user.isPresent())
-//            return (List<UserGame>) user.get().getUserGames().stream()
-//                    .map(userGame ->{
-//                        if (Objects.equals(userGame.getStatus(), "backlog")) {
-//                            return userGame;
-//                        }
-//                        return false;
-//                    });
-
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get().getUserGames().stream()
+                    .filter( userGame -> Objects.equals(userGame.getStatus(), "backlog")).collect(Collectors.toList());
         throw new UserNotFoundException();
     }
 
     @Override
     public List<UserGame> getPlayingGames(int id) throws UserNotFoundException {
-//        Optional<User> user = userRepository.findById(id);
-//        if(user.isPresent())
-//            return (List<UserGame>) user.get().getUserGames().stream()
-//                    .map(userGame ->{
-//                        if (Objects.equals(userGame.getStatus(), "playing")) {
-//                            return userGame;
-//                        }
-//                        return false;
-//                    });
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get().getUserGames().stream()
+                    .filter( userGame -> Objects.equals(userGame.getStatus(), "playing")).collect(Collectors.toList());
         throw new UserNotFoundException();
     }
 

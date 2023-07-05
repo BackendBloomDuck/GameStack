@@ -9,13 +9,11 @@ import java.util.List;
 
 public interface UserService{
 
-    //     adding a new user
-    public ResponseEntity<?> addUser(User user);
+     ResponseEntity<User> addUser(User user) throws UserNotFoundException;
 
-    // update user
-    public ResponseEntity<?> updateUser(int id, User newUser);
+     void updateUser(User newUser, int id) throws UserNotFoundException;
 
-    public ResponseEntity<?> getUser(String username);
+    User getUser(String username) throws UserNotFoundException;
 
     User getUserById(int userId) throws UserNotFoundException;
 

@@ -3,6 +3,7 @@ package com.example.gameproject.user;
 
 import com.example.gameproject.DTOs.MessageResponse;
 import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,13 @@ public class UserServiceImp implements UserService{
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserGame> getFinishedGames(int id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return null;
     }
 
 

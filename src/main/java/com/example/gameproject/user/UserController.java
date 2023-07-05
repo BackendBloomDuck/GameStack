@@ -2,6 +2,7 @@ package com.example.gameproject.user;
 
 
 import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,4 +32,8 @@ public class UserController{
         return userService.getUserById(id);
     }
 
+    @GetMapping("/{id}/finished")
+    public List<UserGame> getFinishedGames(@PathVariable int id) {
+        return userService.getFinishedGames(id);
+    }
 }

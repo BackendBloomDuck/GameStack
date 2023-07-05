@@ -1,6 +1,6 @@
-package dev.gamesapi.security;
+package com.example.gameproject.security;
 
-import dev.gamesapi.user.userInfo.UserInfoUserDetailsService;
+import com.example.gameproject.user.userInfo.UserInfoUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

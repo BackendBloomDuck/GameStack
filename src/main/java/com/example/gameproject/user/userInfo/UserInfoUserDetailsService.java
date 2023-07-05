@@ -1,6 +1,7 @@
-package dev.gamesapi.user.userInfo;
+package com.example.gameproject.user.userInfo;
 
-import dev.gamesapi.user.User;
+import com.example.gameproject.user.User;
+import com.example.gameproject.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class UserInfoUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserInfoRepository repository;
+    private UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

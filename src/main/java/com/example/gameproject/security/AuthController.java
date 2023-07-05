@@ -1,9 +1,9 @@
-package dev.gamesapi.controllers;
+package com.example.gameproject.security;
 
-import dev.gamesapi.DTOs.AuthRequest;
-import dev.gamesapi.security.JwtService;
-import dev.gamesapi.user.User;
-import dev.gamesapi.user.UserService;
+import com.example.gameproject.DTOs.AuthRequest;
+import com.example.gameproject.security.JwtService;
+import com.example.gameproject.user.User;
+import com.example.gameproject.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package dev.gamesapi.security;
+package com.example.gameproject.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

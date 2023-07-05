@@ -1,6 +1,9 @@
-package dev.gamesapi.user;
+package com.example.gameproject.user;
 
+import com.example.gameproject.exception.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 
 public interface UserService{
@@ -13,6 +16,7 @@ public interface UserService{
 
     public ResponseEntity<?> getUser(String username);
 
+    User getUserById(int userId) throws UserNotFoundException;
 
-
+    List<User> getAllUsers();
 }

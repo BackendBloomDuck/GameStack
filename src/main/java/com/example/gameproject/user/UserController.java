@@ -45,8 +45,10 @@ public class UserController {
 
 
     @GetMapping("/finished")
-    public List<UserGame> getFinishedGames(@PathVariable int id) throws UserNotFoundException {
-        return userService.getFinishedGames(id);
+    public List<UserGame> getFinishedGames(@RequestHeader String Authorization) throws UserNotFoundException {
+        String username = jwtService.extractUsername(Authorization);
+        User user = userService.getUser(username);
+        return userService.getFinishedGames(user.getId());
     }
 
     @GetMapping("/backlog")

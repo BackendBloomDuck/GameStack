@@ -1,18 +1,15 @@
-package com.example.gameproject.game.res;
+package com.example.gameproject.game.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameRes {
-    private int id;
+public class GameReq {
     private String name;
     private List<String> developer;
     private List<String> genres;

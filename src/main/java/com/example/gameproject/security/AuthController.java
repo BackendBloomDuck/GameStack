@@ -40,11 +40,9 @@ public class AuthController {
 
     @PostMapping("user/register")
 
-    public ResponseEntity<String> addNewUser(@RequestBody User user) throws UsernameFoundException {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
-        userService.addUser(user);
-        return new ResponseEntity<>("new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED);
-
+        return userService.addUser(user);
 
     }
 
@@ -58,12 +56,12 @@ public class AuthController {
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(authRequest.getUsername());
 
-            User user = userService.getUserByUsername(authRequest.getUsername());
+            User user = userService.getUser(authRequest.getUsername());
 
             return ResponseEntity.status(HttpStatus.OK).body(
                     new LoginRes(user.getUsername(),
-                            user.getName(),
                             user.getEmail(),
+                            user.getName(),
                             user.getRoles(),
                             token));
 

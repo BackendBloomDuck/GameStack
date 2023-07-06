@@ -41,13 +41,10 @@ public class AuthController {
     }
 
     @PostMapping("user/register")
-
-    public ResponseEntity<MessageRes> addNewUser(@RequestBody User user) throws UsernameFoundException {
+    public ResponseEntity<String> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
         userService.addUser(user);
-        return new ResponseEntity<>(new MessageRes("new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED);
-
-
+        return new ResponseEntity<>("new account has been created with this email: " + user.getEmail(),HttpStatus.CREATED);
     }
 
     public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,

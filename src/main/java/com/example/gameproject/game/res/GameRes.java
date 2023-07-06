@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class GameRes {
 
 
     public static List<String> fillter(String s){
-        return List.of(s.split("\\|\\|"));
+        return Arrays.stream(s.split("\\|\\|")).map(String::strip).collect(Collectors.toList());
     }
 
 

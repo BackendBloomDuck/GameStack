@@ -3,6 +3,8 @@ package com.example.gameproject.security;
 import com.example.gameproject.DTOs.AuthRequest;
 import com.example.gameproject.exception.AuthException;
 import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.exception.UsernameFoundException;
+import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.user.User;
 import com.example.gameproject.user.UserService;
 import org.springframework.http.HttpStatus;
@@ -21,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 
-    private final UserService service;
+    private final UserService userService;
 
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
 
     public AuthController(UserService service, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.service = service;
+        this.userService = service;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -39,16 +41,10 @@ public class AuthController {
     }
 
     @PostMapping("user/register")
-    public ResponseEntity<User> addNewUser(@RequestBody User user) throws UserNotFoundException {
+    public ResponseEntity<MessageRes> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
-        return service.addUser(user);
-    }
-
-
-    @PostMapping("admin/register")
-    public ResponseEntity<User> addNewAdmin(@RequestBody User user) throws UserNotFoundException {
-        user.setRoles("ADMIN");
-        return service.addUser(user);
+        userService.addUser(user);
+        return new ResponseEntity<>(new MessageRes("The user is added"), HttpStatus.CREATED);
     }
 
     public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,
@@ -61,9 +57,14 @@ public class AuthController {
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(authRequest.getUsername());
 
-            User user = service.getUser(authRequest.getUsername());
+            User user = userService.getUserByUsername(authRequest.getUsername());
 
-            return ResponseEntity.status(HttpStatus.OK).body(new LoginRes(user, token));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new LoginRes(user.getUsername(),
+                            user.getName(),
+                            user.getEmail(),
+                            user.getRoles(),
+                            token));
         }
         throw new AuthException();
 

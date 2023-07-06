@@ -7,6 +7,7 @@ import com.example.gameproject.game.Game;
 import com.example.gameproject.game.GameService;
 import com.example.gameproject.user.User;
 import com.example.gameproject.user.UserService;
+import com.example.gameproject.userGame.req.UserGameRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

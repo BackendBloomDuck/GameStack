@@ -1,4 +1,4 @@
-package com.example.gameproject.userGame;
+package com.example.gameproject.userGame.req;
 
 import lombok.Data;
 

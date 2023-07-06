@@ -34,21 +34,4 @@ public class UserGame {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setId(GameUserID id) {
-        this.id = id;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
 }

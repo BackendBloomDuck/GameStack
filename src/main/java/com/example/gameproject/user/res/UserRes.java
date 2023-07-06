@@ -1,5 +1,4 @@
-package com.example.gameproject.security;
-
+package com.example.gameproject.user.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRes {
-
+public class UserRes {
     private String username;
     private String name;
-    private String email;
-    private String roles;
-
-    private String token;
 }

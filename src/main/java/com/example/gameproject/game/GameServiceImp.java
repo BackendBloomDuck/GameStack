@@ -1,6 +1,8 @@
 package com.example.gameproject.game;
 
 import com.example.gameproject.exception.GameNotFoundException;
+import com.example.gameproject.game.req.GameReq;
+import com.example.gameproject.utility.filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,14 +46,20 @@ public class GameServiceImp implements GameService {
     }
 
     /**
-     * @param game
+     * @param gameReq
      * @throws GameNotFoundException
      */
     @Override
-    public void addGame(Game game) throws GameNotFoundException {
-        Optional<Game> found = repo.findById(game.getId());
-        if(found.isPresent())
-            throw new GameNotFoundException("The game is NOT exist");
+    public void addGame(GameReq gameReq) throws GameNotFoundException {
+        Game game = new Game();
+        game.setName(gameReq.getName());
+        game.setMetacritic_score(gameReq.getMetacritic_score());
+        game.setRelease_date(game.getRelease_date());
+        game.setPlay_time(gameReq.getPlay_time());
+        game.setPaltforms(filter.listToString(gameReq.getPaltforms()));
+        game.setDeveloper(filter.listToString(gameReq.getDeveloper()));
+        game.setGenres(filter.listToString(gameReq.getGenres()));
+        repo.save(game);
 
         repo.save(game);
     }

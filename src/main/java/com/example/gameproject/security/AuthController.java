@@ -7,15 +7,13 @@ import com.example.gameproject.exception.UsernameFoundException;
 import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.user.User;
 import com.example.gameproject.user.UserService;
+import io.swagger.v3.core.util.Json;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -29,8 +27,10 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(UserService service, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.userService = service;
+
+    public AuthController(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -41,10 +41,13 @@ public class AuthController {
     }
 
     @PostMapping("user/register")
+
     public ResponseEntity<MessageRes> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
         userService.addUser(user);
-        return new ResponseEntity<>(new MessageRes("The user is added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new MessageRes("new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED);
+
+
     }
 
     public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,
@@ -65,6 +68,7 @@ public class AuthController {
                             user.getEmail(),
                             user.getRoles(),
                             token));
+
         }
         throw new AuthException();
 

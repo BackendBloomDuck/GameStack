@@ -23,7 +23,8 @@ public class JwtService{
 
 
     public String extractUsername(String token) {
-        token = token.substring(7);
+
+        token = token.substring( 7 );
         return extractClaim(token, Claims::getSubject);
     }
 

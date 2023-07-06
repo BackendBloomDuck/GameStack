@@ -2,7 +2,11 @@ package com.example.gameproject.user;
 
 
 import com.example.gameproject.exception.UserNotFoundException;
+
 import com.example.gameproject.exception.UsernameFoundException;
+
+import com.example.gameproject.user.userInfo.UserInfoUserDetails;
+
 import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,8 +41,8 @@ public class UserServiceImp implements UserService{
         }
         else
             throw new UsernameFoundException("The " + user.getUsername() + " is already exist");
-    }
 
+    }
     @Override
     public void updateUser(User newUser, int id) throws UserNotFoundException {
         Optional<User> found = userRepository.findById( id );
@@ -53,6 +57,9 @@ public class UserServiceImp implements UserService{
 
         if(Objects.nonNull(newUser.getPassword()) && !"".equalsIgnoreCase(newUser.getPassword()))
             found.get().setPassword(newUser.getPassword());
+
+        if(Objects.nonNull(newUser.getName()) && !"".equalsIgnoreCase(newUser.getName()))
+            found.get().setName(newUser.getName());
 
         userRepository.save( found.get() );
 

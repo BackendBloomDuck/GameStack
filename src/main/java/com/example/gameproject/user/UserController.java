@@ -28,7 +28,6 @@ public class UserController {
 
     @GetMapping("/all")
     public List<User> getAllUser(HttpRequest request) {
-        System.out.println(request.getHeaders());
         return userService.getAllUsers();
     }
 
@@ -44,6 +43,7 @@ public class UserController {
         userService.updateUser(user, id);
         return new ResponseEntity<>(new MessageRes("The user is updated"), HttpStatus.OK);
     }
+
 
     @GetMapping("/finished")
     public List<UserGame> getFinishedGames(@PathVariable int id) throws UserNotFoundException {

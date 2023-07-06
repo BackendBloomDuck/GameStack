@@ -1,10 +1,12 @@
 package com.example.gameproject.user;
 
 
-import com.example.gameproject.DTOs.MessageResponse;
-import com.example.gameproject.exception.GameNotFoundException;
 import com.example.gameproject.exception.UserNotFoundException;
+
+import com.example.gameproject.exception.UsernameFoundException;
+
 import com.example.gameproject.user.userInfo.UserInfoUserDetails;
+
 import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,16 +33,15 @@ public class UserServiceImp implements UserService{
 
 
     @Override
-    public ResponseEntity<User> addUser(User user) {
-        Optional<User> found = userRepository.findByUsername( user.getUsername() );
-        if ( found.isPresent() ) {
-            return ResponseEntity.status( HttpStatus.BAD_REQUEST )
-                    .body( found.get() );
+    public void addUser(User user) throws UsernameFoundException {
+        Optional<User> found = userRepository.findByUsername(user.getUsername());
+        if ( found.isEmpty() ) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
         }
-        user.setPassword( passwordEncoder.encode( user.getPassword() ) );
-        userRepository.save( user );
-        ResponseEntity response = new ResponseEntity( "new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED );
-        return response;
+        else
+            throw new UsernameFoundException("The " + user.getUsername() + " is already exist");
+
     }
     @Override
     public void updateUser(User newUser, int id) throws UserNotFoundException {
@@ -65,7 +66,7 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public User getUser(String username) throws UserNotFoundException {
+    public User getUserByUsername(String username) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()){
             return user.get();
@@ -76,11 +77,12 @@ public class UserServiceImp implements UserService{
     @Override
     public User getUserById(int id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent())
+        if (user.isPresent()){
             return user.get();
+        }
         throw new UserNotFoundException("user not found");
-
     }
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();

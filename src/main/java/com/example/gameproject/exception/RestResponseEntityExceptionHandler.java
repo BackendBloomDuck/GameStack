@@ -14,20 +14,26 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ErrorMessage> handleMaxSizeException(MaxUploadSizeExceededException e, WebRequest request) {
+    public ResponseEntity<ErrorMessage> handleMaxSizeException(MaxUploadSizeExceededException e) {
         ErrorMessage message = new ErrorMessage(HttpStatus.EXPECTATION_FAILED, "File too large! (Max:" + e.getMaxUploadSize() +")");
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
     }
 
     @ExceptionHandler(GameNotFoundException.class)
-    public  ResponseEntity<ErrorMessage> handleGameNotFoundException(GameNotFoundException e, WebRequest request){
+    public ResponseEntity<ErrorMessage> handleGameNotFoundException(GameNotFoundException e){
         ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public  ResponseEntity<ErrorMessage> handleUserNotFoundException(UserNotFoundException e, WebRequest request){
+    public ResponseEntity<ErrorMessage> handleUserNotFoundException(UserNotFoundException e){
         ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+    }
+
+    @ExceptionHandler(UsernameFoundException.class)
+    public ResponseEntity<ErrorMessage> handleUsernameFoundException(UsernameFoundException e){
+        ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 }

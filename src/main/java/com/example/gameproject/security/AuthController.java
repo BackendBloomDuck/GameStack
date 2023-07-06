@@ -3,6 +3,8 @@ package com.example.gameproject.security;
 import com.example.gameproject.DTOs.AuthRequest;
 import com.example.gameproject.exception.AuthException;
 import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.exception.UsernameFoundException;
+import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.user.User;
 import com.example.gameproject.user.UserService;
 import io.swagger.v3.core.util.Json;
@@ -25,8 +27,10 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
+
     public AuthController(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userService = userService;
+
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -37,16 +41,13 @@ public class AuthController {
     }
 
     @PostMapping("user/register")
-    public ResponseEntity<User> addNewUser(@RequestBody User user ) throws UserNotFoundException {
+
+    public ResponseEntity<MessageRes> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
-        return userService.addUser(user);
-    }
+        userService.addUser(user);
+        return new ResponseEntity<>(new MessageRes("new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED);
 
 
-    @PostMapping("admin/register")
-    public ResponseEntity<User> addNewAdmin(@RequestBody User user) throws UserNotFoundException {
-        user.setRoles("ADMIN");
-        return userService.addUser(user);
     }
 
     public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,
@@ -58,8 +59,16 @@ public class AuthController {
                         authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(authRequest.getUsername());
-            User user = userService.getUser(authRequest.getUsername());
-            return ResponseEntity.status(HttpStatus.OK).body(new LoginRes(user.getUsername(),user.getName(),user.getEmail(),user.getRoles(), token));
+
+            User user = userService.getUserByUsername(authRequest.getUsername());
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new LoginRes(user.getUsername(),
+                            user.getName(),
+                            user.getEmail(),
+                            user.getRoles(),
+                            token));
+
         }
         throw new AuthException();
 

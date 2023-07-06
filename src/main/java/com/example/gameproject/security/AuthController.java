@@ -59,7 +59,7 @@ public class AuthController {
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(authRequest.getUsername());
             User user = userService.getUser(authRequest.getUsername());
-            return ResponseEntity.status(HttpStatus.OK).body(new LoginRes(user.getUsername(),user.getEmail(),user.getRoles(), token));
+            return ResponseEntity.status(HttpStatus.OK).body(new LoginRes(user.getUsername(),user.getName(),user.getEmail(),user.getRoles(), token));
         }
         throw new AuthException();
 

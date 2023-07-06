@@ -57,6 +57,9 @@ public class UserServiceImp implements UserService{
         if(Objects.nonNull(newUser.getPassword()) && !"".equalsIgnoreCase(newUser.getPassword()))
             found.get().setPassword(newUser.getPassword());
 
+        if(Objects.nonNull(newUser.getName()) && !"".equalsIgnoreCase(newUser.getName()))
+            found.get().setName(newUser.getName());
+
         userRepository.save( found.get() );
 
     }

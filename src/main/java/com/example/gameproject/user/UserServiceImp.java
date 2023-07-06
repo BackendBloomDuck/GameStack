@@ -31,13 +31,15 @@ public class UserServiceImp implements UserService{
 
     @Override
     public ResponseEntity<User> addUser(User user) throws UserNotFoundException {
-        Optional<User> found = userRepository.findById(user.getId());
+        Optional<User> found = userRepository.findById( user.getId() );
         if ( found.isPresent() ) {
-            return ResponseEntity.status( HttpStatus.BAD_REQUEST).body(found.get());
+            return ResponseEntity.status( HttpStatus.BAD_REQUEST )
+                    .body( found.get() );
         }
-        throw new UserNotFoundException();
+        User addedUser = userRepository.save( user );
+        ResponseEntity response = new ResponseEntity( "new account has been created with this email: " + addedUser.getEmail(), HttpStatus.CREATED );
+        return response;
     }
-
     @Override
     public void updateUser(User newUser, int id) throws UserNotFoundException {
         Optional<User> found = userRepository.findById( id );

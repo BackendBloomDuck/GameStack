@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRes {
-    private User user;
+    private String username;
+    private String email;
+    private String roles;
     private String token;
 }

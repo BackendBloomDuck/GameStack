@@ -4,6 +4,7 @@ package com.example.gameproject.user;
 import com.example.gameproject.DTOs.MessageResponse;
 import com.example.gameproject.exception.GameNotFoundException;
 import com.example.gameproject.exception.UserNotFoundException;
+import com.example.gameproject.user.userInfo.UserInfoUserDetails;
 import com.example.gameproject.userGame.UserGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,14 +31,15 @@ public class UserServiceImp implements UserService{
 
 
     @Override
-    public ResponseEntity<User> addUser(User user) throws UserNotFoundException {
-        Optional<User> found = userRepository.findById( user.getId() );
+    public ResponseEntity<User> addUser(User user) {
+        Optional<User> found = userRepository.findByUsername( user.getUsername() );
         if ( found.isPresent() ) {
             return ResponseEntity.status( HttpStatus.BAD_REQUEST )
                     .body( found.get() );
         }
-        User addedUser = userRepository.save( user );
-        ResponseEntity response = new ResponseEntity( "new account has been created with this email: " + addedUser.getEmail(), HttpStatus.CREATED );
+        user.setPassword( passwordEncoder.encode( user.getPassword() ) );
+        userRepository.save( user );
+        ResponseEntity response = new ResponseEntity( "new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED );
         return response;
     }
     @Override

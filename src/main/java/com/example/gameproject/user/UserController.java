@@ -3,6 +3,7 @@ package com.example.gameproject.user;
 
 import com.example.gameproject.exception.UserNotFoundException;
 import com.example.gameproject.responses.MessageRes;
+import com.example.gameproject.security.JwtService;
 import com.example.gameproject.userGame.UserGame;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +16,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
+    private final JwtService jwtService;
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/all")
-    public List<User> getAllUser() {
+    public List<User> getAllUser(@RequestHeader String Authorization) {
+       String username = jwtService.extractUsername( Authorization );
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public User getUserName(@PathVariable int id) throws UserNotFoundException {
-        return userService.getUserById(id);
-    }
 
     @GetMapping("/{id}/finished")
     public List<UserGame> getFinishedGames(@PathVariable int id) throws UserNotFoundException {

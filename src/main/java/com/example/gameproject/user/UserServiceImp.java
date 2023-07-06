@@ -33,16 +33,18 @@ public class UserServiceImp implements UserService{
 
 
     @Override
-    public void addUser(User user) throws UsernameFoundException {
-        Optional<User> found = userRepository.findByUsername(user.getUsername());
-        if ( found.isEmpty() ) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+    public ResponseEntity<User> addUser(User user) {
+        Optional<User> found = userRepository.findByUsername( user.getUsername() );
+        if ( found.isPresent() ) {
+            return ResponseEntity.status( HttpStatus.BAD_REQUEST )
+                    .body( found.get() );
         }
-        else
-            throw new UsernameFoundException("The " + user.getUsername() + " is already exist");
-
+        user.setPassword( passwordEncoder.encode( user.getPassword() ) );
+        userRepository.save( user );
+        ResponseEntity response = new ResponseEntity( "new account has been created with this email: " + user.getEmail(), HttpStatus.CREATED );
+        return response;
     }
+
     @Override
     public void updateUser(User newUser, int id) throws UserNotFoundException {
         Optional<User> found = userRepository.findById( id );
@@ -66,12 +68,11 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public User getUserByUsername(String username) throws UserNotFoundException {
+    public User getUser(String username) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()){
             return user.get();
-        }
-        throw new UserNotFoundException("user not found");
+        }else throw new UserNotFoundException("user not found");
     }
 
     @Override

@@ -4,10 +4,8 @@ import com.example.gameproject.DTOs.AuthRequest;
 import com.example.gameproject.exception.AuthException;
 import com.example.gameproject.exception.UserNotFoundException;
 import com.example.gameproject.exception.UsernameFoundException;
-import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.user.User;
 import com.example.gameproject.user.UserService;
-import io.swagger.v3.core.util.Json;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,10 +39,9 @@ public class AuthController {
     }
 
     @PostMapping("user/register")
-    public ResponseEntity<String> addNewUser(@RequestBody User user) throws UsernameFoundException {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) throws UsernameFoundException {
         user.setRoles("USER");
-        userService.addUser(user);
-        return new ResponseEntity<>("new account has been created with this email: " + user.getEmail(),HttpStatus.CREATED);
+        return userService.addUser(user);
     }
 
     public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,
@@ -57,12 +54,12 @@ public class AuthController {
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(authRequest.getUsername());
 
-            User user = userService.getUserByUsername(authRequest.getUsername());
+            User user = userService.getUser(authRequest.getUsername());
 
             return ResponseEntity.status(HttpStatus.OK).body(
                     new LoginRes(user.getUsername(),
-                            user.getName(),
                             user.getEmail(),
+                            user.getName(),
                             user.getRoles(),
                             token));
 

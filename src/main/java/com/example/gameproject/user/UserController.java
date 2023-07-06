@@ -2,7 +2,6 @@ package com.example.gameproject.user;
 
 
 import com.example.gameproject.exception.UserNotFoundException;
-import com.example.gameproject.exception.UsernameFoundException;
 import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.security.JwtService;
 import com.example.gameproject.userGame.UserGame;
@@ -34,7 +33,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<User> getUserByUsername(@RequestHeader String Authorization) throws UserNotFoundException {
         String username = jwtService.extractUsername(Authorization);
-        User user = userService.getUserByUsername(username);
+        User user = userService.getUser(username);
         return new ResponseEntity<>(user, HttpStatus.FOUND);
     }
 

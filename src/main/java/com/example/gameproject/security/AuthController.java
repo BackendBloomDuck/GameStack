@@ -35,20 +35,18 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<LoginRes> authenticateAndGetToken(@RequestBody AuthRequest authRequest) throws UserNotFoundException, AuthException {
-        return getStringResponseEntity(authRequest, authenticationManager, jwtService);
+        return getStringResponseEntity(authRequest);
     }
 
     @PostMapping("user/register")
 
     public ResponseEntity<User> addNewUser(@RequestBody User user) throws UsernameFoundException {
-        user.setRoles("USER");
+            user.setRoles("USER");
         return userService.addUser(user);
 
     }
 
-    public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest,
-                                                            AuthenticationManager authenticationManager,
-                                                            JwtService jwtService)
+    public ResponseEntity<LoginRes> getStringResponseEntity(@RequestBody AuthRequest authRequest)
             throws UserNotFoundException, AuthException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
@@ -66,7 +64,7 @@ public class AuthController {
                             token));
 
         }
-        throw new AuthException();
+        else throw new AuthException();
 
     }
 }

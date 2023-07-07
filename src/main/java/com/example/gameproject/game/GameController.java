@@ -7,6 +7,7 @@ import com.example.gameproject.game.res.GameRes;
 import com.example.gameproject.responses.MessageRes;
 import com.example.gameproject.utility.filter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -45,9 +46,12 @@ public class GameController {
      * @return list of games and that are warped by GamePagingRes
      */
     @GetMapping
-    public GamePagingRes getGameByNameIgnoreCaseWithPaging(@RequestParam String name, @RequestParam int pageNumber){
+    public GamePagingRes getGameByNameIgnoreCaseWithPaging(@RequestParam @Nullable String name, @RequestParam int pageNumber){
         Pageable request = PageRequest.of(pageNumber, pageSize);
-        List<Object> objects = gameService.findByNameIgnoreCaseWithPaging(name, request);
+        List<Object> objects;
+        if(name != null)  objects = gameService.findByNameIgnoreCaseWithPaging(name, request);
+        else
+            objects = gameService.findAllWithoutName(request);
 
         List<GameRes> gameRes = ((List<Game>) objects.get(2)).stream().map(game -> new GameRes(
                         game.getId(),

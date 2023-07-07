@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface GameRepository extends JpaRepository<Game,Integer> {
 
     Page<Game> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Game> findAll( Pageable pageable);
 }

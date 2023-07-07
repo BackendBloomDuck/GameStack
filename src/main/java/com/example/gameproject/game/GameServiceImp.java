@@ -31,6 +31,13 @@ public class GameServiceImp implements GameService {
         long totalElements = page.getTotalElements();
         return List.of(totalPages, totalElements, page.getContent());
     }
+    @Override
+    public List<Object> findAllWithoutName( Pageable pageable) {
+        Page<Game> page = repo.findAll(pageable);
+        int totalPages = page.getTotalPages();
+        long totalElements = page.getTotalElements();
+        return List.of(totalPages, totalElements, page.getContent());
+    }
 
     /**
      * @param id

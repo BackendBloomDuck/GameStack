@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +15,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtService{
+public class JwtService {
 
 
-//    @Value("${setting.SECRET}")
-    public static String  SECRET= "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
-
+    public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
 
 
     public String extractUsername(String token) {
-
-        token = token.substring( 7 );
         return extractClaim(token, Claims::getSubject);
     }
 

@@ -15,4 +15,5 @@ public interface GameService {
     void addGame(GameReq game) throws GameNotFoundException;
 
     void updateGame(Game game, int id) throws GameNotFoundException;
+     List<Object> findAllWithoutName( Pageable pageable);
 }

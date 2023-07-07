@@ -5,6 +5,7 @@ import com.example.gameproject.exception.UserNotFoundException;
 
 import com.example.gameproject.exception.UsernameFoundException;
 
+import com.example.gameproject.game.Game;
 import com.example.gameproject.user.userInfo.UserInfoUserDetails;
 
 import com.example.gameproject.userGame.UserGame;
@@ -90,31 +91,48 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public List<UserGame> getFinishedGames(int id) throws UserNotFoundException {
+    public List<Game> getFinishedGames(int id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent())
-            return user.get().getUserGames().stream()
-                    .filter( userGame -> Objects.equals(userGame.getStatus(), "finished")).collect(Collectors.toList());
-        throw new UserNotFoundException();
+        if (user.isPresent()) {
+            List<UserGame> userGames = user.get().getUserGames();
+            List<Game> finishedGames = userGames.stream()
+                    .filter(userGame -> Objects.equals(userGame.getStatus(), "finished"))
+                    .map(UserGame::getGame)
+                    .collect(Collectors.toList());
+            return finishedGames;
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+
+    @Override
+    public List<Game> getBacklogGames(int id) throws UserNotFoundException {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            List<UserGame> userGames = user.get().getUserGames();
+            List<Game> finishedGames = userGames.stream()
+                    .filter(userGame -> Objects.equals(userGame.getStatus(), "backlog"))
+                    .map(UserGame::getGame)
+                    .collect(Collectors.toList());
+            return finishedGames;
+        } else {throw new UserNotFoundException();
+    }
     }
 
     @Override
-    public List<UserGame> getBacklogGames(int id) throws UserNotFoundException {
+    public List<Game> getPlayingGames(int id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent())
-            return user.get().getUserGames().stream()
-                    .filter( userGame -> Objects.equals(userGame.getStatus(), "backlog")).collect(Collectors.toList());
-        throw new UserNotFoundException();
+        if(user.isPresent()) {
+            List<UserGame> userGames = user.get().getUserGames();
+            List<Game> finishedGames = userGames.stream()
+                    .filter(userGame -> Objects.equals(userGame.getStatus(), "playing"))
+                    .map(UserGame::getGame)
+                    .collect(Collectors.toList());
+            return finishedGames;
+        } else {throw new UserNotFoundException();
     }
-
-    @Override
-    public List<UserGame> getPlayingGames(int id) throws UserNotFoundException {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent())
-            return user.get().getUserGames().stream()
-                    .filter( userGame -> Objects.equals(userGame.getStatus(), "playing")).collect(Collectors.toList());
-        throw new UserNotFoundException();
-    }
+        }
 
 
     public ResponseEntity<?> delete(Integer id) {
